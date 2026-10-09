@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "buildCommand": "npm --prefix apps/web run build && npm --prefix apps/api run build",
+  "installCommand": "npm --prefix apps/web install && npm --prefix apps/api install",
+  "outputDirectory": "apps/web/dist",
+  "functions": {
+    "apps/api/src/lambda.ts": {
+      "runtime": "@vercel/node@5",
+      "memory": 512,
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "apps/api/src/lambda.ts"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json|webmanifest|map))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
