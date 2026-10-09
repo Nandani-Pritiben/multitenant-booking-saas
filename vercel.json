@@ -5,7 +5,7 @@
   "outputDirectory": "apps/web/dist",
   "functions": {
     "apps/api/src/lambda.ts": {
-      "runtime": "@vercel/node@5",
+      "runtime": "@vercel/node@3",
       "memory": 512,
       "maxDuration": 30
     }
@@ -23,8 +23,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
