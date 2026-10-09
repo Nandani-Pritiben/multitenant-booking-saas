@@ -1,0 +1,5 @@
+import { Link } from 'react-router-dom';
+
+export function PhaseLandingPage() {
+  return <main className="public-page"><nav className="public-nav"><Link className="brand" to="/"><span className="brand-mark">B</span> booking / studio</Link><Link className="text-link" to="/login">Log in</Link></nav><section className="landing-hero"><p className="eyebrow">A CLEARER DAY STARTS HERE</p><h1>Good work deserves<br />a better rhythm.</h1><p className="hero-copy">One calm workspace for your appointments, your team, and the people who trust you with their time.</p><div className="hero-actions"><Link className="button primary" to="/signup">Create your workspace</Link><Link className="button secondary" to="/login">Log in</Link></div><div className="hero-footer"><span>01 / ORGANIZE</span><span>Appointments, made manageable.</span><span>MADE FOR YOUR BUSINESS</span></div></section></main>;
+}
