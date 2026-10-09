@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../app/AuthProvider';
 import { billingApi } from '../features/billing/api';
-import { useEntitlements, usageLabel, isAtLimit } from '../features/billing/useEntitlements';
+import { useEntitlements, isAtLimit } from '../features/billing/useEntitlements';
 import { UsageBar } from '../features/billing/components/UsageBar';
 import type { EffectiveSubscription, PlanFeature, PlanInfo } from '../features/billing/types';
 import { ApiError } from '../lib/api-client';
