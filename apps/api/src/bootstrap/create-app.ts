@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
-import * as helmet from 'helmet';
 import express from 'express';
 import { AppModule } from '../app.module.js';
 import { AppErrorFilter } from '../filters/app-error.filter.js';
@@ -21,7 +20,6 @@ export async function createApp(server: express.Express) {
 
   app.getHttpAdapter().getInstance().set('trust proxy', 1);
   app.setGlobalPrefix('api');
-  app.use(helmet.default({ contentSecurityPolicy: false }));
 
   const corsOrigins = (config.get<string>('CORS_ORIGINS') ?? 'http://localhost:5173')
     .split(',')

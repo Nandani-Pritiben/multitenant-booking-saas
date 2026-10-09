@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as helmet from 'helmet';
 import { AppModule } from './app.module.js';
 import { AppErrorFilter } from './filters/app-error.filter.js';
 
@@ -9,9 +8,19 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   const config = app.get(ConfigService);
 
+  // Trust the first proxy (Vercel edge / reverse proxy)
   app.getHttpAdapter().getInstance().set('trust proxy', 1);
+
   app.setGlobalPrefix('api');
-  app.use(helmet.default({ contentSecurityPolicy: false }));
+
+  // Basic security headers without importing helmet
+  app.use((_req: unknown, res: { setHeader: (k: string, v: string) => void }, next: () => void) => {
+    (res as any).setHeader('X-Content-Type-Options', 'nosniff');
+    (res as any).setHeader('X-Frame-Options', 'DENY');
+    (res as any).setHeader('X-XSS-Protection', '0');
+    (res as any).setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+  });
 
   const corsOrigins = (config.get<string>('CORS_ORIGINS') ?? 'http://localhost:5173')
     .split(',')
