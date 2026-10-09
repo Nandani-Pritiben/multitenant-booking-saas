@@ -4,7 +4,7 @@ import { clientsApi } from '../features/clients/api';
 import { ClientList } from '../features/clients/components/ClientList';
 import { ClientSearch } from '../features/clients/components/ClientSearch';
 import { UpgradeWall } from '../features/billing/components/UpgradeWall';
-import type { ClientQuery, ClientSummary } from '../features/clients/types';
+import type { ClientSummary } from '../features/clients/types';
 import '../styles/clients.css';
 import '../styles/bookings.css';
 
