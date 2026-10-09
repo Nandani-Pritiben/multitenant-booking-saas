@@ -1,0 +1,41 @@
+/* ── Clients page ───────────────────────────────────────────────── */
+.client-search { margin-bottom: 18px; }
+.client-search-input { width: 100%; max-width: 420px; }
+
+.client-booking-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #edf3e9; color: #234b34; border-radius: 10px;
+  padding: 2px 9px; font-size: 11px; font-weight: 750;
+}
+
+.client-pagination {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid #e6ebe4;
+}
+.client-page-info { font-size: 12px; color: #718076; }
+
+/* ── Client profile ─────────────────────────────────────────────── */
+.client-profile { min-width: 0; }
+
+.client-edit-form {
+  background: #fff; border: 1px solid #e0e6de;
+  padding: 20px; margin-bottom: 20px;
+}
+
+.client-notes { }
+.client-notes-textarea {
+  width: 100%; border: 1px solid #ccd5ca;
+  background: #fcfdfb; padding: 10px 12px;
+  font: inherit; font-size: 13px;
+  resize: vertical; outline: none;
+  line-height: 1.6;
+}
+.client-notes-textarea:focus {
+  border-color: #52775b; box-shadow: 0 0 0 2px #52775b22;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .client-search-input { max-width: 100%; }
+  .client-pagination { flex-wrap: wrap; }
+}
