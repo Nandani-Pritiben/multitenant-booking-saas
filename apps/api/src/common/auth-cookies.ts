@@ -4,10 +4,15 @@ import type { Session } from '@supabase/supabase-js';
 export const AUTH_ACCESS_COOKIE = 'booking_access_token';
 export const AUTH_REFRESH_COOKIE = 'booking_refresh_token';
 
+// In production, frontend (Vercel) and backend (Render) are on different domains.
+// Cookies must be SameSite=None + Secure to work cross-origin.
+// In development (same host via Vite proxy), SameSite=Lax is fine.
+const isProduction = process.env.NODE_ENV === 'production';
+
 const commonOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax' as const,
+  secure: isProduction,
+  sameSite: (isProduction ? 'none' : 'lax') as 'none' | 'lax',
   path: '/api',
 };
 
