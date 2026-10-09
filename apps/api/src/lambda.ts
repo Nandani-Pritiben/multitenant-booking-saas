@@ -9,7 +9,6 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
-import helmet from 'helmet';
 import express from 'express';
 import { AppModule } from './app.module.js';
 
@@ -29,12 +28,16 @@ async function bootstrap(): Promise<express.Express> {
 
   app.setGlobalPrefix('api');
 
-  app.use(
-    helmet({
-      // Allow Vercel's inline scripts for error pages
-      contentSecurityPolicy: false,
-    }),
-  );
+  // Basic security headers without helmet
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.disable('x-powered-by');
+  app.use((_req: unknown, res: { setHeader: (k: string, v: string) => void }, next: () => void) => {
+    (res as any).setHeader('X-Content-Type-Options', 'nosniff');
+    (res as any).setHeader('X-Frame-Options', 'DENY');
+    (res as any).setHeader('Referrer-Policy', 'no-referrer');
+    (res as any).setHeader('Cross-Origin-Resource-Policy', 'same-site');
+    next();
+  });
 
   app.enableCors({
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
