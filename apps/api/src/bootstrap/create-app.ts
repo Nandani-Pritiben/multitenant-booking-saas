@@ -18,8 +18,19 @@ export async function createApp(server: express.Express) {
 
   const config = app.get(ConfigService);
 
-  app.getHttpAdapter().getInstance().set('trust proxy', 1);
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('trust proxy', 1);
+  expressApp.disable('x-powered-by');
   app.setGlobalPrefix('api');
+
+  // Basic security headers without helmet
+  app.use((_req: unknown, res: { setHeader: (k: string, v: string) => void }, next: () => void) => {
+    (res as any).setHeader('X-Content-Type-Options', 'nosniff');
+    (res as any).setHeader('X-Frame-Options', 'DENY');
+    (res as any).setHeader('Referrer-Policy', 'no-referrer');
+    (res as any).setHeader('Cross-Origin-Resource-Policy', 'same-site');
+    next();
+  });
 
   const corsOrigins = (config.get<string>('CORS_ORIGINS') ?? 'http://localhost:5173')
     .split(',')
