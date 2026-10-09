@@ -11,10 +11,8 @@ import { AppErrorFilter } from '../filters/app-error.filter.js';
  * src/main.ts uses its own bootstrap() so Vercel's NestJS detector
  * can find NestFactory.create directly in the entry file.
  */
-export async function createApp(server: express.Express) {
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
-    bufferLogs: true,
-  });
+export async function createApp() {
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
   const config = app.get(ConfigService);
 

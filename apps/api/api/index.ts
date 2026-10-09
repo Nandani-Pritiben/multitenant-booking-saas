@@ -5,27 +5,25 @@
  * This file is ONLY used during Vercel deployment.
  * Local development uses src/main.ts (HTTP server on PORT 4000).
  */
-import express from 'express';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { createApp } from '../src/bootstrap/create-app.js';
 
 // Cache the Express instance across warm Lambda invocations
-let cachedServer: express.Express | null = null;
+let cachedApp: import('express').Express | null = null;
 
-async function getServer(): Promise<express.Express> {
-  if (cachedServer) return cachedServer;
+async function getExpress(): Promise<import('express').Express> {
+  if (cachedApp) return cachedApp;
 
-  const server = express();
-  const app = await createApp(server);
+  const app = await createApp();
   await app.init();
-  cachedServer = server;
-  return cachedServer;
+  cachedApp = app.getHttpAdapter().getInstance() as import('express').Express;
+  return cachedApp;
 }
 
 export default async function handler(
   req: IncomingMessage,
   res: ServerResponse,
 ): Promise<void> {
-  const server = await getServer();
-  server(req as express.Request, res as express.Response);
+  const expressApp = await getExpress();
+  expressApp(req, res);
 }
